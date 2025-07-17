@@ -40,17 +40,19 @@ const paginationSchema = z.object({
   limit: z.string().transform(Number).default("10"),
 });
 
-// GET /api/posts/recommended - Get recommended posts (auth required)
-export const getRecommendedPosts: RequestHandler = (req: AuthRequest, res) => {
+// GET /api/posts/recommended - Get recommended posts (first 10 posts with images)
+export const getRecommendedPosts: RequestHandler = (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-
     const { page, limit } = paginationSchema.parse(req.query);
     const result = MockDataService.getAllPosts(page, limit, "latest");
 
-    res.json(result);
+    // Filter to only show posts with images for the carousel
+    const filteredResult = {
+      ...result,
+      data: result.data.filter((post) => post.imageUrl).slice(0, 10),
+    };
+
+    res.json(filteredResult);
   } catch (error) {
     res.status(400).json({ message: "Invalid query parameters" });
   }
