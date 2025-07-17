@@ -11,16 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
-import {
-  Search,
-  Menu,
-  X,
-  PenTool,
-  User,
-  Settings,
-  LogOut,
-  Home,
-} from "lucide-react";
+import { Search, Menu, X, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -39,17 +30,47 @@ export function Header() {
   const isActivePath = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
+      <div className="flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-sm font-bold text-primary-foreground">B</span>
+        <Link to="/" className="flex items-center gap-2">
+          {/* Logo Symbol - matching Figma design */}
+          <div className="relative w-8 h-8">
+            {/* First blue shape */}
+            <svg
+              className="absolute top-0 left-0"
+              width="14"
+              height="18"
+              viewBox="0 0 14 18"
+              fill="none"
+            >
+              <path
+                d="M13.0645 4.96143L4.70703 7.81592V15.521L0 17.1284V4.63916L13.0645 0.179199V4.96143Z"
+                fill="#0093DD"
+              />
+            </svg>
+            {/* Second blue shape */}
+            <svg
+              className="absolute top-1 left-2"
+              width="14"
+              height="18"
+              viewBox="0 0 14 18"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0.660156 4.98725L13.7248 0.526894V13.0159L0.660156 17.4762V4.98725Z"
+                fill="#0093DD"
+              />
+            </svg>
           </div>
-          <span className="hidden sm:inline-block font-bold text-xl">Blog</span>
+          <span className="hidden sm:inline-block font-semibold text-lg text-foreground">
+            Your Logo
+          </span>
         </Link>
 
-        {/* Search Bar - Desktop */}
+        {/* Desktop Search */}
         <form
           onSubmit={handleSearch}
           className="hidden md:flex flex-1 max-w-md mx-8"
@@ -61,103 +82,96 @@ export function Header() {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-background"
             />
           </div>
         </form>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4">
+        {/* Right Side Actions */}
+        <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
-              <Button asChild variant="ghost">
-                <Link to="/" className={cn(isActivePath("/") && "bg-accent")}>
-                  <Home className="h-4 w-4 mr-2" />
-                  Home
-                </Link>
-              </Button>
+              {/* Desktop Profile Menu */}
+              <div className="hidden md:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full"
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user?.avatarUrl} alt={user?.name} />
+                        <AvatarFallback>
+                          {user?.name?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48" align="end" forceMount>
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-              <Button asChild variant="ghost">
-                <Link
-                  to="/write"
-                  className={cn(isActivePath("/write") && "bg-accent")}
+              {/* Mobile Avatar */}
+              <div className="md:hidden">
+                <Button
+                  variant="ghost"
+                  className="relative h-10 w-10 rounded-full"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
-                  <PenTool className="h-4 w-4 mr-2" />
-                  Write
-                </Link>
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-8 w-8 rounded-full"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.avatarUrl} alt={user?.name} />
-                      <AvatarFallback>
-                        {user?.name?.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user?.name}</p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
-                        {user?.email}
-                      </p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile">
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={user?.avatarUrl} alt={user?.name} />
+                    <AvatarFallback>
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </div>
             </>
           ) : (
-            <div className="flex items-center space-x-2">
-              <Button asChild variant="ghost">
-                <Link to="/login">Login</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Sign Up</Link>
-              </Button>
-            </div>
-          )}
-        </nav>
+            <>
+              {/* Desktop Auth Buttons */}
+              <div className="hidden md:flex items-center gap-2">
+                <Button asChild variant="ghost" className="text-sm">
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button
+                  asChild
+                  className="text-sm bg-[#0093DD] hover:bg-[#0093DD]/90"
+                >
+                  <Link to="/register">Register</Link>
+                </Button>
+              </div>
 
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X /> : <Menu />}
-        </Button>
+              {/* Mobile Menu Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X /> : <Menu />}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background">
-          <div className="container px-4 py-4 space-y-4">
+        <div className="md:hidden border-t border-border bg-background">
+          <div className="px-4 py-4 space-y-4">
             {/* Mobile Search */}
             <form onSubmit={handleSearch}>
               <div className="relative">
@@ -180,45 +194,12 @@ export function Header() {
                   variant="ghost"
                   className="w-full justify-start"
                 >
-                  <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Home className="h-4 w-4 mr-2" />
-                    Home
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="w-full justify-start"
-                >
-                  <Link to="/write" onClick={() => setIsMobileMenuOpen(false)}>
-                    <PenTool className="h-4 w-4 mr-2" />
-                    Write
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="w-full justify-start"
-                >
                   <Link
                     to="/profile"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <User className="h-4 w-4 mr-2" />
                     Profile
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="w-full justify-start"
-                >
-                  <Link
-                    to="/settings"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    Settings
                   </Link>
                 </Button>
                 <Button
@@ -230,7 +211,7 @@ export function Header() {
                   }}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  Log out
+                  Logout
                 </Button>
               </div>
             ) : (
@@ -238,17 +219,17 @@ export function Header() {
                 <Button
                   asChild
                   variant="ghost"
-                  className="w-full"
+                  className="w-full text-[#0093DD] hover:text-[#0093DD]/80"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Link to="/login">Login</Link>
                 </Button>
                 <Button
                   asChild
-                  className="w-full"
+                  className="w-full bg-[#0093DD] hover:bg-[#0093DD]/90"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Link to="/register">Sign Up</Link>
+                  <Link to="/register">Register</Link>
                 </Button>
               </div>
             )}
