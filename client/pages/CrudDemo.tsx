@@ -89,7 +89,7 @@ export default function CrudDemo() {
     setEditForm({
       title: post.title,
       content: post.content,
-      tags: post.tags.join(", "),
+      tags: post.tags ? post.tags.join(", ") : "",
     });
   };
 
@@ -302,13 +302,15 @@ export default function CrudDemo() {
                       <p className="text-muted-foreground mb-3">
                         {post.content}
                       </p>
-                      <div className="flex gap-2 mb-3">
-                        {post.tags.map((tag) => (
-                          <Badge key={tag} variant="secondary">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex gap-2 mb-3">
+                          {post.tags.map((tag) => (
+                            <Badge key={tag} variant="secondary">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
                       <div className="text-sm text-muted-foreground">
                         {post.likes} likes • {post.comments} comments •{" "}
                         {new Date(post.createdAt).toLocaleDateString()}
