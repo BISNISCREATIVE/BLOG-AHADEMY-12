@@ -90,15 +90,20 @@ export function BlogCard({ post, className }: BlogCardProps) {
       {/* Author Info */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <Avatar className="h-[30px] w-[30px]">
-            <AvatarImage src={post.author.avatarUrl} alt={post.author.name} />
-            <AvatarFallback className="text-xs">
-              {post.author.name.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <span className="text-xs font-normal text-[#181D27] leading-6">
+          <Link to={`/user/${post.author.id}`}>
+            <Avatar className="h-[30px] w-[30px] hover:opacity-80 transition-opacity">
+              <AvatarImage src={post.author.avatarUrl} alt={post.author.name} />
+              <AvatarFallback className="text-xs">
+                {post.author.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
+          <Link
+            to={`/user/${post.author.id}`}
+            className="text-xs font-normal text-[#181D27] leading-6 hover:text-[#0093DD] transition-colors"
+          >
             {post.author.name}
-          </span>
+          </Link>
         </div>
 
         {/* Dot separator */}
