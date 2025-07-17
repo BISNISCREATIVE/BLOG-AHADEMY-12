@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://blogger-wph-api-production.up.railway.app";
+const API_BASE_URL = "/api";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
