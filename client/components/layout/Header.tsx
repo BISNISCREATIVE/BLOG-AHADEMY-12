@@ -35,9 +35,10 @@ export function Header() {
 
   const isActivePath = (path: string) => location.pathname === path;
 
-  return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
-      <div className="flex h-16 items-center justify-between px-4">
+    return (
+    <TooltipProvider>
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
+        <div className="flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           {/* Logo Symbol - matching Figma design */}
@@ -93,7 +94,7 @@ export function Header() {
           </div>
         </form>
 
-        {/* Right Side Actions */}
+                {/* Right Side Actions */}
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
@@ -105,12 +106,7 @@ export function Header() {
                 >
                   <Link to="/write">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path
-                        d="M12.5 3.5L13.5 4.5L5 13H3V11L11.5 2.5L12.5 3.5Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        fill="none"
-                      />
+                      <path d="M12.5 3.5L13.5 4.5L5 13H3V11L11.5 2.5L12.5 3.5Z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                     </svg>
                     Write Post
                   </Link>
