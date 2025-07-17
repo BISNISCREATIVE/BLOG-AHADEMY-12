@@ -59,33 +59,61 @@ const createSequentialPosts = (): Post[] => {
   const carouselImage =
     "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2F65ece06449fd457695abcb19dacc53c5?format=webp&width=800";
 
-  // Create 10 posts for "Recommend For You" carousel
-  for (let i = 1; i <= 10; i++) {
+  const contentVariations = [
+    "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.",
+    "Modern web development requires a deep understanding of user experience principles, performance optimization, and accessibility standards. Developers today must think beyond just code.",
+    "The landscape of frontend technologies is constantly evolving. From React to Vue, from vanilla JavaScript to TypeScript, developers have more tools than ever to create amazing experiences.",
+    "Building responsive, mobile-first applications has become the standard in modern web development. Understanding CSS Grid, Flexbox, and media queries is essential.",
+    "Performance optimization techniques like lazy loading, code splitting, and efficient state management can make or break user experience in modern applications.",
+    "Accessibility in web development isn't just a nice-to-have anymore — it's a requirement. Creating inclusive experiences benefits everyone.",
+    "The rise of component-based architecture has revolutionized how we think about building scalable frontend applications and maintaining clean codebases.",
+    "API integration and state management are crucial skills for frontend developers working with complex, data-driven applications in today's development landscape.",
+  ];
+
+  const tagVariations = [
+    ["Programming", "Frontend", "Coding"],
+    ["JavaScript", "React", "Development"],
+    ["CSS", "Design", "UI/UX"],
+    ["TypeScript", "Modern", "Web"],
+    ["Performance", "Optimization", "Speed"],
+    ["Accessibility", "Inclusive", "Design"],
+    ["Architecture", "Components", "Scalable"],
+    ["API", "State", "Management"],
+  ];
+
+  // Create 50 posts for "Recommend For You" carousel
+  for (let i = 1; i <= 50; i++) {
+    const contentIndex = (i - 1) % contentVariations.length;
+    const tagIndex = (i - 1) % tagVariations.length;
+
     posts.push({
       id: i,
       title: `5 Reasons to Learn Frontend Development in 2025 Post${i}`,
-      content: baseContent,
-      tags: ["Programming", "Frontend", "Coding"],
+      content: contentVariations[contentIndex],
+      tags: tagVariations[tagIndex],
       imageUrl: carouselImage,
       author: mockUsers[(i - 1) % mockUsers.length] as Author,
       createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(), // Each post 1 hour apart
-      likes: 20 + i,
-      comments: 20,
+      likes: Math.floor(Math.random() * 50) + 10, // Random likes between 10-60
+      comments: Math.floor(Math.random() * 30) + 5, // Random comments between 5-35
     });
   }
 
   // Add additional posts for "Most Liked" (without images)
-  for (let i = 11; i <= 20; i++) {
+  for (let i = 51; i <= 70; i++) {
+    const contentIndex = (i - 1) % contentVariations.length;
+    const tagIndex = (i - 1) % tagVariations.length;
+
     posts.push({
       id: i,
       title: `5 Reasons to Learn Frontend Development in 2025`,
-      content: baseContent,
-      tags: ["Programming", "Frontend", "Coding"],
+      content: contentVariations[contentIndex],
+      tags: tagVariations[tagIndex],
       imageUrl: undefined, // No images for Most Liked posts
       author: mockUsers[(i - 1) % mockUsers.length] as Author,
       createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(),
-      likes: 30 - i + 10, // Higher likes for "Most Liked"
-      comments: 15,
+      likes: Math.floor(Math.random() * 80) + 40, // Higher likes for "Most Liked" (40-120)
+      comments: Math.floor(Math.random() * 25) + 10, // Comments between 10-35
     });
   }
 
