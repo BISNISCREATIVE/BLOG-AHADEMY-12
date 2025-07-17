@@ -17,11 +17,8 @@ export default function VisitProfile() {
   } = useQuery({
     queryKey: ["user", userId],
     queryFn: async (): Promise<User> => {
-      const response = await fetch(`/api/users/${userId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch user");
-      }
-      return response.json();
+      const response = await apiClient.get(`/users/${userId}`);
+      return response.data;
     },
     enabled: !!userId,
   });
@@ -34,11 +31,8 @@ export default function VisitProfile() {
   } = useQuery({
     queryKey: ["userPosts", userId],
     queryFn: async (): Promise<{ data: Post[]; total: number }> => {
-      const response = await fetch(`/api/posts/by-user/${userId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch user posts");
-      }
-      return response.json();
+      const response = await apiClient.get(`/posts/by-user/${userId}`);
+      return response.data;
     },
     enabled: !!userId,
   });
