@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,8 @@ import { Post } from "@shared/types";
 import { Heart, MessageCircle } from "lucide-react";
 import { useLikePost } from "@/hooks/use-posts";
 import { useAuth } from "@/hooks/use-auth";
+import { useComments } from "@/hooks/use-comments";
+import { CommentsModal } from "@/components/post/CommentsModal";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +20,8 @@ interface BlogCardProps {
 export function BlogCard({ post, className }: BlogCardProps) {
   const { isAuthenticated } = useAuth();
   const likeMutation = useLikePost();
+  const [showComments, setShowComments] = useState(false);
+  const { data: comments = [] } = useComments(post.id);
 
   const handleLike = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,7 +31,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
 
   const handleComment = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Navigate to post detail with comments section
+    setShowComments(true);
   };
 
   const timeAgo = formatDistanceToNow(new Date(post.createdAt), {
@@ -168,6 +173,15 @@ export function BlogCard({ post, className }: BlogCardProps) {
           </span>
         </div>
       </div>
+
+      {/* Comments Modal */}
+      <CommentsModal
+        isOpen={showComments}
+        onClose={() => setShowComments(false)}
+        postId={post.id}
+        comments={comments}
+        commentsCount={post.comments}
+      />
     </article>
   );
 }
