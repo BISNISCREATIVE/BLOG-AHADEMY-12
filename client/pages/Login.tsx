@@ -4,18 +4,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/hooks/use-auth";
-import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const loginSchema = z.object({
@@ -35,7 +28,6 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
@@ -52,156 +44,118 @@ export default function Login() {
       });
       navigate("/");
     } catch (error: any) {
-      console.error("Login error:", error);
-
-      if (error.response?.data?.message) {
-        setError("root", { message: error.response.data.message });
-      } else if (error.response?.data?.errors) {
-        const errors = error.response.data.errors;
-        if (errors.email) {
-          setError("email", { message: errors.email[0] });
-        }
-        if (errors.password) {
-          setError("password", { message: errors.password[0] });
-        }
-      } else {
-        setError("root", {
-          message: "Something went wrong. Please try again.",
-        });
-      }
+      toast({
+        title: "Login failed",
+        description: error.message || "Invalid credentials. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="w-full max-w-md space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-muted-foreground mt-2">
-            Sign in to your account to continue
-          </p>
-          <div className="mt-4 p-3 bg-muted rounded-lg">
-            <p className="text-sm font-medium">Demo Credentials:</p>
-            <p className="text-sm text-muted-foreground">
-              Email: john@example.com (or any demo user email)
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Password: any password works
-            </p>
-          </div>
-        </div>
-
-        {/* Login Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-            <CardDescription>
-              Enter your email and password to access your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Global Error */}
-              {errors.root && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{errors.root.message}</AlertDescription>
-                </Alert>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md bg-white shadow-lg border border-[#D5D7DA] rounded-xl">
+        <CardHeader className="space-y-1 pb-4 pt-8">
+          <CardTitle className="text-2xl font-bold text-center text-[#181D27]">
+            Sign In
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 px-8 pb-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-[#181D27]"
+              >
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                {...register("email")}
+                className={`h-12 border-[#D5D7DA] focus:border-[#0093DD] focus:ring-[#0093DD] ${
+                  errors.email
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                    : ""
+                }`}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
               )}
+            </div>
 
-              {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+            {/* Password Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="password"
+                className="text-sm font-medium text-[#181D27]"
+              >
+                Password
+              </Label>
+              <div className="relative">
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  {...register("email")}
-                  className={errors.email ? "border-destructive" : ""}
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  {...register("password")}
+                  className={`h-12 pr-10 border-[#D5D7DA] focus:border-[#0093DD] focus:ring-[#0093DD] ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      : ""
+                  }`}
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">
-                    {errors.email.message}
-                  </p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4 text-gray-400" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-gray-400" />
+                  )}
+                </button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
+              )}
+            </div>
 
-              {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    {...register("password")}
-                    className={errors.password ? "border-destructive" : ""}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                {errors.password && (
-                  <p className="text-sm text-destructive">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Submit Button */}
+            {/* Login Button */}
+            <div className="pt-2">
               <Button
                 type="submit"
-                className="w-full"
                 disabled={isSubmitting}
-                size="lg"
+                className="w-full h-12 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white font-medium rounded-full"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Signing In...
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
                   </>
                 ) : (
-                  "Sign In"
+                  "Login"
                 )}
               </Button>
-            </form>
-
-            {/* Register Link */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  className="font-medium text-primary hover:underline"
-                >
-                  Sign up
-                </Link>
-              </p>
             </div>
-          </CardContent>
-        </Card>
+          </form>
 
-        {/* Back to Home */}
-        <div className="text-center">
-          <Link
-            to="/"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            ← Back to Home
-          </Link>
-        </div>
-      </div>
+          {/* Register Link */}
+          <div className="text-center pt-2">
+            <p className="text-sm text-[#535862]">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="font-medium text-[#0093DD] hover:text-[#0093DD]/80"
+              >
+                Register
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
