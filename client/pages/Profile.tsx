@@ -168,15 +168,54 @@ interface EditProfileModalProps {
 
 function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
   const [name, setName] = useState(user?.name || "");
-  const [headline, setHeadline] = useState("Frontend Developer");
+  const [headline, setHeadline] = useState(
+    user?.headline || "Frontend Developer",
+  );
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSave = () => {
+    // In a real app, you would upload the avatar to a server/cloud storage
+    // and get back a URL to save in the user profile
     toast({
       title: "Profile Updated",
       description: "Your profile has been updated successfully!",
     });
     onClose();
+  };
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB limit
+        toast({
+          title: "File too large",
+          description: "File size should be less than 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setAvatarFile(file);
+
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setAvatarPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -189,6 +228,11 @@ function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
           <div className="flex justify-center">
             <div className="relative">
               <Avatar className="h-20 w-20">
+                <AvatarImage
+                  src={avatarPreview || user?.avatarUrl}
+                  alt={user?.name}
+                  className="object-cover"
+                />
                 <AvatarFallback className="text-lg">
                   {user?.name
                     ?.split(" ")
@@ -196,11 +240,26 @@ function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
                     .join("") || "U"}
                 </AvatarFallback>
               </Avatar>
-              <button className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 hover:bg-primary/90">
+              <label
+                htmlFor="avatar-upload"
+                className="absolute -bottom-1 -right-1 bg-[#0093DD] text-white rounded-full p-2 hover:bg-[#0093DD]/90 cursor-pointer transition-colors shadow-lg"
+              >
                 <Camera className="h-3 w-3" />
-              </button>
+              </label>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="hidden"
+              />
             </div>
           </div>
+          {avatarFile && (
+            <p className="text-sm text-center text-[#535862]">
+              New photo selected: {avatarFile.name}
+            </p>
+          )}
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium">Name</label>
