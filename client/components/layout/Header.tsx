@@ -114,6 +114,12 @@ export function Header() {
                         Profile
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/crud-demo" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        CRUD Demo
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={logout}>
                       <LogOut className="mr-2 h-4 w-4" />
