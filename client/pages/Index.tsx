@@ -103,58 +103,93 @@ export default function Index() {
     <div className="min-h-screen bg-white">
       {/* Main Content */}
       <div className="w-full max-w-sm mx-auto md:max-w-3xl lg:max-w-6xl xl:max-w-7xl">
-        {/* Recommend For You Section */}
-        {isAuthenticated && (
+        {isAuthenticated ? (
+          /* Desktop: Two Column Layout */
+          <div className="md:grid md:grid-cols-2 md:gap-8 lg:gap-12">
+            {/* Left Column - Recommend For You */}
+            <section className="px-4 py-6 md:px-0 md:pl-8 lg:pl-12">
+              <h1 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
+                Recommend For You
+              </h1>
+
+              {renderPosts(
+                recommendedPosts?.data,
+                loadingRecommended,
+                errorRecommended,
+              )}
+
+              {/* Pagination for Recommended */}
+              {recommendedPosts?.data && recommendedPosts.data.length > 0 && (
+                <div className="mt-6">
+                  <Pagination
+                    currentPage={recommendedPage}
+                    totalPages={calculateTotalPages(
+                      recommendedPosts.total || recommendedPosts.data.length,
+                    )}
+                    onPageChange={setRecommendedPage}
+                  />
+                </div>
+              )}
+            </section>
+
+            {/* Right Column - Most Liked */}
+            <section className="px-4 py-6 md:px-0 md:pr-8 lg:pr-12 md:border-l md:border-[#D5D7DA]">
+              {/* Mobile Divider - only visible on mobile */}
+              <div className="w-full h-1.5 bg-[#D5D7DA] mb-6 md:hidden" />
+
+              <h2 className="text-xl font-bold text-[#181D27] leading-9 mb-4 md:pl-8 lg:pl-12">
+                Most Liked
+              </h2>
+
+              <div className="md:pl-8 lg:pl-12">
+                {renderPosts(
+                  mostLikedPosts?.data,
+                  loadingMostLiked,
+                  errorMostLiked,
+                )}
+
+                {/* Pagination for Most Liked */}
+                {mostLikedPosts?.data && mostLikedPosts.data.length > 0 && (
+                  <div className="mt-6">
+                    <Pagination
+                      currentPage={mostLikedPage}
+                      totalPages={calculateTotalPages(
+                        mostLikedPosts.total || mostLikedPosts.data.length,
+                      )}
+                      onPageChange={setMostLikedPage}
+                    />
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+        ) : (
+          /* Not authenticated: Single column with Most Liked */
           <section className="px-4 py-6 md:px-8 lg:px-12">
-            <h1 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
-              Recommend For You
-            </h1>
+            <h2 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
+              Most Liked
+            </h2>
 
             {renderPosts(
-              recommendedPosts?.data,
-              loadingRecommended,
-              errorRecommended,
+              mostLikedPosts?.data,
+              loadingMostLiked,
+              errorMostLiked,
             )}
 
-            {/* Pagination for Recommended */}
-            {recommendedPosts?.data && recommendedPosts.data.length > 0 && (
+            {/* Pagination for Most Liked */}
+            {mostLikedPosts?.data && mostLikedPosts.data.length > 0 && (
               <div className="mt-6">
                 <Pagination
-                  currentPage={recommendedPage}
+                  currentPage={mostLikedPage}
                   totalPages={calculateTotalPages(
-                    recommendedPosts.total || recommendedPosts.data.length,
+                    mostLikedPosts.total || mostLikedPosts.data.length,
                   )}
-                  onPageChange={setRecommendedPage}
+                  onPageChange={setMostLikedPage}
                 />
               </div>
             )}
           </section>
         )}
-
-        {/* Divider */}
-        <div className="w-full h-1.5 bg-[#D5D7DA]" />
-
-        {/* Most Liked Section */}
-        <section className="px-4 py-6 md:px-8 lg:px-12">
-          <h2 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
-            Most liked
-          </h2>
-
-          {renderPosts(mostLikedPosts?.data, loadingMostLiked, errorMostLiked)}
-
-          {/* Pagination for Most Liked */}
-          {mostLikedPosts?.data && mostLikedPosts.data.length > 0 && (
-            <div className="mt-6">
-              <Pagination
-                currentPage={mostLikedPage}
-                totalPages={calculateTotalPages(
-                  mostLikedPosts.total || mostLikedPosts.data.length,
-                )}
-                onPageChange={setMostLikedPage}
-              />
-            </div>
-          )}
-        </section>
       </div>
 
       {/* Footer */}
