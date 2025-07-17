@@ -769,13 +769,37 @@ export default function Write() {
 
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
-            <Button
-              onClick={handleSubmit}
-              disabled={createMutation.isPending}
-              className="h-11 rounded-full bg-[#0093DD] px-8 text-sm font-semibold text-white hover:bg-[#0093DD]/90 w-full md:w-auto"
-            >
-              {createMutation.isPending ? "Publishing..." : "Finish"}
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  disabled={createMutation.isPending}
+                  className="h-11 rounded-full bg-[#0093DD] px-8 text-sm font-semibold text-white hover:bg-[#0093DD]/90 w-full md:w-auto"
+                >
+                  {createMutation.isPending ? "Publishing..." : "Finish"}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Publish Post</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to publish this post? Once published,
+                    it will be visible to all users.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button variant="outline" disabled={createMutation.isPending}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={createMutation.isPending}
+                    className="bg-[#0093DD] hover:bg-[#0093DD]/90"
+                  >
+                    {createMutation.isPending ? "Publishing..." : "Publish"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
