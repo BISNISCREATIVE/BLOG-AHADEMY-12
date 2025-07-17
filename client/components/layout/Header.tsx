@@ -108,11 +108,36 @@ export function Header() {
                     <TooltipTrigger asChild>
                       <Button
                         asChild
-                        className="h-10 px-4 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white flex items-center gap-2"
+                        variant="ghost"
+                        className="h-10 px-4 text-[#0093DD] hover:text-[#0093DD]/80 flex items-center gap-2"
                       >
                         <Link to="/write">
-                          <Edit className="h-4 w-4" />
-                          Write Post
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                          >
+                            <path
+                              d="M2.5 17.5L7.04167 16.0417L16.25 6.83333C16.9167 6.16667 16.9167 5.08333 16.25 4.41667L15.5833 3.75C14.9167 3.08333 13.8333 3.08333 13.1667 3.75L3.95833 12.9583L2.5 17.5Z"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M11.4583 5.54167L14.4583 8.54167"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          <span className="underline font-medium">
+                            Write Post
+                          </span>
                         </Link>
                       </Button>
                     </TooltipTrigger>
