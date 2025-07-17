@@ -39,40 +39,53 @@ export function BlogCard({ post, className }: BlogCardProps) {
   });
 
   return (
-    <article
-      className={cn(
-        "flex flex-col gap-4 bg-white md:justify-between",
-        className,
-      )}
-    >
-      {/* Title */}
-      <Link to={`/post/${post.id}`}>
-        <h2 className="text-base font-bold text-[#181D27] leading-7 line-clamp-2 hover:text-[#0093DD] transition-colors md:text-lg md:leading-8">
-          {post.title}
-        </h2>
-      </Link>
+    <article className={cn("flex flex-col gap-4 bg-white", className)}>
+      <div className="md:flex md:gap-4">
+        {/* Left Column - Image (Desktop and Mobile) */}
+        {post.imageUrl && (
+          <Link to={`/post/${post.id}`} className="block md:w-48 md:shrink-0">
+            <img
+              src={post.imageUrl}
+              alt={post.title}
+              className="w-full h-40 md:h-32 object-cover rounded-lg"
+            />
+          </Link>
+        )}
 
-      {/* Tags - only show if authenticated */}
-      {isAuthenticated && post.tags && post.tags.length > 0 && (
-        <div className="flex items-start gap-2 flex-wrap">
-          {post.tags.slice(0, 3).map((tag) => (
-            <Badge
-              key={tag}
-              variant="outline"
-              className="h-7 px-2 text-xs font-normal border-[#D5D7DA] text-[#181D27] bg-white rounded-lg"
-            >
-              {tag}
-            </Badge>
-          ))}
+        {/* Right Column - Content */}
+        <div className="flex-1 space-y-3">
+          {/* Title */}
+          <Link to={`/post/${post.id}`}>
+            <h2 className="text-base font-bold text-[#181D27] leading-7 line-clamp-2 hover:text-[#0093DD] transition-colors md:text-lg md:leading-8">
+              {post.title}
+            </h2>
+          </Link>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex items-start gap-2 flex-wrap">
+              {post.tags.slice(0, 3).map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="h-6 px-2 text-xs font-normal border-[#D5D7DA] text-[#535862] bg-[#F8F9FA] rounded-lg"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          {/* Description */}
+          <Link to={`/post/${post.id}`}>
+            <p className="text-sm font-normal text-[#181D27] leading-6 line-clamp-2">
+              {post.content.length > 150
+                ? `${post.content.slice(0, 150)}...`
+                : post.content}
+            </p>
+          </Link>
         </div>
-      )}
-
-      {/* Description */}
-      <Link to={`/post/${post.id}`}>
-        <p className="text-xs font-normal text-[#181D27] leading-6 line-clamp-2 md:text-sm md:leading-7 md:flex-1">
-          {post.content}
-        </p>
-      </Link>
+      </div>
 
       {/* Author Info */}
       <div className="flex items-center gap-3">
