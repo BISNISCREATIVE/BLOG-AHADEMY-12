@@ -26,13 +26,10 @@ export default function Search() {
         return { data: [], total: 0 };
       }
 
-      const response = await fetch(
-        `/api/posts/search?query=${encodeURIComponent(query)}`,
+      const response = await apiClient.get(
+        `/posts/search?query=${encodeURIComponent(query)}`,
       );
-      if (!response.ok) {
-        throw new Error("Failed to search posts");
-      }
-      return response.json();
+      return response.data;
     },
     enabled: !!searchParams.get("q"),
   });
