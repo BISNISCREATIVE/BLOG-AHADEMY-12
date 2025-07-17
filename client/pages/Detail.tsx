@@ -54,20 +54,10 @@ export default function Detail() {
 
   const createCommentMutation = useMutation({
     mutationFn: async (content: string) => {
-      const response = await fetch(`/api/posts/${id}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ content }),
+      const response = await apiClient.post(`/posts/${id}/comments`, {
+        content,
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to create comment");
-      }
-
-      return response.json();
+      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", parseInt(id!)] });
