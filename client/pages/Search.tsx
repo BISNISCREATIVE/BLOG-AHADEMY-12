@@ -7,6 +7,7 @@ import { BlogCard } from "@/components/post/BlogCard";
 import { Footer } from "@/components/layout/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { Post } from "@shared/types";
+import apiClient from "@/lib/api";
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
