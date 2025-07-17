@@ -565,8 +565,8 @@ export default function Write() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="flex h-20 items-center gap-4 border-b border-[#D5D7DA] bg-white px-4 lg:px-[120px]">
+      {/* Header - Desktop */}
+      <div className="hidden md:flex h-20 items-center gap-4 border-b border-[#D5D7DA] bg-white px-4 lg:px-[120px]">
         <button
           onClick={() => navigate(-1)}
           className="flex h-6 w-6 items-center justify-center"
@@ -581,15 +581,34 @@ export default function Write() {
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden sm:block text-sm font-medium text-[#181D27]">
+          <span className="text-sm font-medium text-[#181D27]">
             {user?.name || "User"}
           </span>
         </div>
       </div>
 
+      {/* Header - Mobile */}
+      <div className="md:hidden flex h-16 items-center justify-between border-b border-[#D5D7DA] bg-white px-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex h-6 w-6 items-center justify-center"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+          <h1 className="text-base font-bold text-[#181D27]">Write Post</h1>
+        </div>
+        <Avatar className="h-10 w-10">
+          <AvatarImage src={user?.avatarUrl} />
+          <AvatarFallback>
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </AvatarFallback>
+        </Avatar>
+      </div>
+
       {/* Main Content */}
-      <div className="flex justify-center py-12">
-        <div className="w-full max-w-[734px] space-y-5 px-4">
+      <div className="flex justify-center py-6 md:py-12">
+        <div className="w-full max-w-[734px] space-y-5 px-4 md:px-6">
           {/* Title Field */}
           <div className="space-y-1">
             <label className="text-sm font-semibold text-[#0A0D12]">
@@ -604,7 +623,7 @@ export default function Write() {
               }}
               className={`h-12 rounded-xl border text-sm ${
                 errors.title ? "border-red-500" : "border-[#D5D7DA]"
-              }`}
+              } focus:border-[#0093DD] focus:ring-1 focus:ring-[#0093DD]`}
             />
             {errors.title && (
               <p className="text-sm text-red-500">{errors.title}</p>
@@ -619,12 +638,79 @@ export default function Write() {
             <div
               className={`rounded-lg border ${
                 errors.content ? "border-red-500" : "border-[#D5D7DA]"
-              }`}
+              } focus-within:border-[#0093DD] focus-within:ring-1 focus-within:ring-[#0093DD]`}
             >
-              <EditorToolbar
-                onFormat={handleEditorFormat}
-                activeFormats={activeFormats}
-              />
+              <div className="hidden md:block">
+                <EditorToolbar
+                  onFormat={handleEditorFormat}
+                  activeFormats={activeFormats}
+                />
+              </div>
+              {/* Mobile toolbar - simplified */}
+              <div className="md:hidden flex items-center gap-2 p-2 border-b border-[#D5D7DA]">
+                <Select
+                  onValueChange={(value) =>
+                    handleEditorFormat("formatBlock", value)
+                  }
+                  defaultValue="div"
+                >
+                  <SelectTrigger className="w-[120px] h-8 text-sm">
+                    <SelectValue placeholder="Heading 1" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="div">Normal</SelectItem>
+                    <SelectItem value="h1">Heading 1</SelectItem>
+                    <SelectItem value="h2">Heading 2</SelectItem>
+                    <SelectItem value="h3">Heading 3</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0"
+                  onClick={() => handleEditorFormat("bold")}
+                >
+                  <Bold className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0"
+                  onClick={() => handleEditorFormat("italic")}
+                >
+                  <Italic className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0"
+                  onClick={() => handleEditorFormat("insertUnorderedList")}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0"
+                  onClick={() => handleEditorFormat("insertOrderedList")}
+                >
+                  <ListOrdered className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0"
+                  onClick={() => {
+                    const url = prompt("Enter image URL:");
+                    if (url) handleEditorFormat("insertImage", url);
+                  }}
+                >
+                  <ImageIcon className="h-4 w-4" />
+                </Button>
+                <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                  <Maximize className="h-4 w-4" />
+                </Button>
+              </div>
               <div
                 ref={editorRef}
                 contentEditable
@@ -677,7 +763,7 @@ export default function Write() {
             <Button
               onClick={handleSubmit}
               disabled={createMutation.isPending}
-              className="h-11 rounded-full bg-[#0093DD] px-8 text-sm font-semibold text-white hover:bg-[#0093DD]/90"
+              className="h-11 rounded-full bg-[#0093DD] px-8 text-sm font-semibold text-white hover:bg-[#0093DD]/90 w-full md:w-auto"
             >
               {createMutation.isPending ? "Publishing..." : "Finish"}
             </Button>
@@ -685,9 +771,16 @@ export default function Write() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-[#D5D7DA] bg-white py-6">
+      {/* Footer - Desktop */}
+      <div className="hidden md:block border-t border-[#D5D7DA] bg-white py-6">
         <div className="text-center text-sm text-[#535862]">
+          © 2025 Web Programming Hack Blog All rights reserved.
+        </div>
+      </div>
+
+      {/* Footer - Mobile */}
+      <div className="md:hidden border-t border-[#D5D7DA] bg-white py-4">
+        <div className="text-center text-xs text-[#535862]">
           © 2025 Web Programming Hack Blog All rights reserved.
         </div>
       </div>
