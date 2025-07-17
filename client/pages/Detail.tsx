@@ -51,6 +51,47 @@ export default function Detail() {
   const [newComment, setNewComment] = useState("");
   const queryClient = useQueryClient();
 
+  const createCommentMutation = useMutation({
+    mutationFn: async (content: string) => {
+      const response = await fetch(`/api/posts/${id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create comment");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", parseInt(id!)] });
+      queryClient.invalidateQueries({ queryKey: ["post", id!] });
+      setNewComment("");
+      toast({
+        title: "Success",
+        description: "Comment added successfully!",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to add comment",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleCommentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim() || !isAuthenticated) return;
+    createCommentMutation.mutate(newComment.trim());
+  };
+
   const handleDelete = async () => {
     if (!id) return;
 
@@ -327,9 +368,19 @@ export default function Detail() {
                   />
                   <Button
                     className="mt-3 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white px-8"
-                    disabled={!newComment.trim()}
+                    disabled={
+                      !newComment.trim() || createCommentMutation.isPending
+                    }
+                    onClick={handleCommentSubmit}
                   >
-                    Send
+                    {createCommentMutation.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      "Send"
+                    )}
                   </Button>
                 </div>
               </div>
