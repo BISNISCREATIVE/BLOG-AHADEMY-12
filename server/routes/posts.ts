@@ -11,12 +11,13 @@ import { z } from "zod";
 const createPostSchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
   content: z.string().min(1, "Content is required"),
-  tags: z.string().transform((str) =>
-    str
+  tags: z.string().transform((str) => {
+    if (!str || str.trim() === "") return [];
+    return str
       .split(",")
       .map((tag) => tag.trim())
-      .filter(Boolean),
-  ),
+      .filter(Boolean);
+  }),
 });
 
 const updatePostSchema = z.object({
