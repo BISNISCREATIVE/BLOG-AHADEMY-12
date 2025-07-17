@@ -51,73 +51,48 @@ export const mockUsers: User[] = [
   },
 ];
 
-export const mockPosts: Post[] = [
-  {
-    id: 1,
-    title: "5 Reasons to Learn Frontend Development in 2025",
-    content:
-      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.\n\nHere are 5 reasons why you should start learning frontend development today:\n\n1. High Industry Demand\n\nTech companies, startups, and even traditional businesses are constantly looking for frontend developers to help them deliver high-quality digital experiences.\n\n2. Powerful and Beginner-Friendly Tools\n\nModern frameworks like React, Vue, and Svelte make it easier than ever to build interactive UIs. Their growing ecosystems and active communities mean you'll find support at every step.\n\n3. Creative Freedom\n\nFrontend development allows you to bring your design ideas to life. From animations to responsive layouts, your creativity directly impacts how users engage with a product.\n\n4. Rapid Career Growth\n\nWith roles like UI Developer, React Developer, and Frontend Engineer, you'll find plenty of opportunities with competitive salaries and growth potential.\n\n5. Essential for Fullstack Development\n\nUnderstanding frontend is crucial if you want to become a fullstack developer. It complements your backend knowledge and enables you to build complete applications.\n\nConclusion:\n\nIf you're interested in building things that users interact with daily, frontend development is the path to take. Whether you're a designer learning to code or a backend developer exploring the frontend, 2025 is the perfect year to start.",
-    tags: ["Programming", "Frontend", "Coding"],
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
-    author: mockUsers[0] as Author,
-    createdAt: "2025-05-27T10:00:00Z",
-    likes: 20,
-    comments: 20,
-  },
-  {
-    id: 2,
-    title: "5 Reasons to Learn Frontend Development in 2025",
-    content:
-      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.",
-    tags: ["Programming", "Frontend", "Coding"],
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
-    author: mockUsers[1] as Author,
-    createdAt: "2025-05-27T09:00:00Z",
-    likes: 20,
-    comments: 20,
-  },
-  {
-    id: 3,
-    title: "5 Reasons to Learn Frontend Development in 2025",
-    content:
-      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.",
-    tags: ["Programming", "Frontend", "Coding"],
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
-    author: mockUsers[2] as Author,
-    createdAt: "2025-05-27T08:00:00Z",
-    likes: 20,
-    comments: 20,
-  },
-  {
-    id: 4,
-    title: "5 Reasons to Learn Frontend Development in 2025",
-    content:
-      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.",
-    tags: ["Programming", "Frontend", "Coding"],
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
-    author: mockUsers[3] as Author,
-    createdAt: "2025-05-27T07:00:00Z",
-    likes: 20,
-    comments: 20,
-  },
-  {
-    id: 5,
-    title: "5 Reasons to Learn Frontend Development in 2025",
-    content:
-      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.",
-    tags: ["Programming", "Frontend", "Coding"],
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
-    author: mockUsers[0] as Author,
-    createdAt: "2025-05-27T06:00:00Z",
-    likes: 20,
-    comments: 20,
-  },
-];
+// Create sequential posts for carousel display
+const createSequentialPosts = (): Post[] => {
+  const posts: Post[] = [];
+  const baseContent =
+    "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.";
+  const carouselImage =
+    "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2F65ece06449fd457695abcb19dacc53c5?format=webp&width=800";
+
+  // Create 10 posts for "Recommend For You" carousel
+  for (let i = 1; i <= 10; i++) {
+    posts.push({
+      id: i,
+      title: `5 Reasons to Learn Frontend Development in 2025 Post${i}`,
+      content: baseContent,
+      tags: ["Programming", "Frontend", "Coding"],
+      imageUrl: carouselImage,
+      author: mockUsers[(i - 1) % mockUsers.length] as Author,
+      createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(), // Each post 1 hour apart
+      likes: 20 + i,
+      comments: 20,
+    });
+  }
+
+  // Add additional posts for "Most Liked" (without images)
+  for (let i = 11; i <= 20; i++) {
+    posts.push({
+      id: i,
+      title: `5 Reasons to Learn Frontend Development in 2025`,
+      content: baseContent,
+      tags: ["Programming", "Frontend", "Coding"],
+      imageUrl: undefined, // No images for Most Liked posts
+      author: mockUsers[(i - 1) % mockUsers.length] as Author,
+      createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(),
+      likes: 30 - i + 10, // Higher likes for "Most Liked"
+      comments: 15,
+    });
+  }
+
+  return posts;
+};
+
+export const mockPosts: Post[] = createSequentialPosts();
 
 export const mockComments: Comment[] = [
   {
