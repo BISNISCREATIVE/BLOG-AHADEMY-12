@@ -42,7 +42,10 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data);
+      await login({
+        email: data.email,
+        password: data.password,
+      });
       toast({
         title: "Welcome back!",
         description: "You have been successfully logged in.",
