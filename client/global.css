@@ -12,6 +12,14 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
+    /* Custom Figma Design Colors */
+    --figma-primary: 0 147 221; /* #0093DD */
+    --figma-neutral-900: 24 29 39; /* #181D27 */
+    --figma-neutral-600: 83 88 98; /* #535862 */
+    --figma-neutral-400: 164 167 174; /* #A4A7AE */
+    --figma-neutral-300: 213 215 218; /* #D5D7DA */
+    --figma-neutral-25: 253 253 253; /* #FDFDFD */
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
