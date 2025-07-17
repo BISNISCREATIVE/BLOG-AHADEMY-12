@@ -33,6 +33,22 @@ export const mockUsers: User[] = [
     avatarUrl:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
   },
+  {
+    id: 5,
+    name: "Jessica Jane",
+    email: "jessica@example.com",
+    headline: "Product Designer",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
+  },
+  {
+    id: 6,
+    name: "Alexandra",
+    email: "alexandra@example.com",
+    headline: "Frontend Developer",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+  },
 ];
 
 export const mockPosts: Post[] = [
