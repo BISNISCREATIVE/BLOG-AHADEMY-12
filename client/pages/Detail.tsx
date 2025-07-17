@@ -212,10 +212,10 @@ export default function Detail() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 lg:px-12">
+      <div className="w-full max-w-sm mx-auto md:max-w-2xl lg:max-w-4xl xl:max-w-6xl px-4 py-6 md:px-8 lg:px-12">
         {/* Post Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#181D27] mb-4">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#181D27] mb-4 leading-tight">
             {post.title}
           </h1>
 
@@ -262,22 +262,25 @@ export default function Detail() {
 
           {/* Cover Image */}
           {post.imageUrl && (
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <img
                 src={post.imageUrl}
                 alt={post.title}
-                className="w-full h-[400px] object-cover rounded-lg"
+                className="w-full h-[250px] md:h-[400px] object-cover rounded-lg"
               />
             </div>
           )}
         </div>
 
         {/* Post Content */}
-        <div className="prose prose-lg max-w-none mb-8">
-          <div
-            className="text-[#181D27] leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+        <div className="max-w-none mb-6 md:mb-8">
+          <div className="text-[#181D27] leading-relaxed text-sm md:text-base whitespace-pre-line">
+            {post.content.split("\n").map((paragraph, index) => (
+              <p key={index} className="mb-4 last:mb-0">
+                {paragraph}
+              </p>
+            ))}
+          </div>
         </div>
 
         {/* Post Stats & Actions */}
