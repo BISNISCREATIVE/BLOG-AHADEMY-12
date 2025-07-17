@@ -496,6 +496,7 @@ export default function Profile() {
     type: "likes" | "comments";
   } | null>(null);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [editPostModal, setEditPostModal] = useState<Post | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
