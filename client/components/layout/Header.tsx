@@ -131,14 +131,37 @@ export function Header() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className="w-48"
+                      className="w-56"
                       align="end"
                       forceMount
                     >
+                      <div className="flex items-center gap-2 p-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user?.avatarUrl} alt={user?.name} />
+                          <AvatarFallback>
+                            {user?.name?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user?.name}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user?.email}
+                          </p>
+                        </div>
+                      </div>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
                         <Link to="/profile" className="flex items-center">
                           <User className="mr-2 h-4 w-4" />
                           Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/write" className="flex items-center">
+                          <Edit className="mr-2 h-4 w-4" />
+                          Write Post
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
@@ -148,7 +171,10 @@ export function Header() {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={logout}>
+                      <DropdownMenuItem
+                        onClick={logout}
+                        className="text-red-600 focus:text-red-600"
+                      >
                         <LogOut className="mr-2 h-4 w-4" />
                         Logout
                       </DropdownMenuItem>
