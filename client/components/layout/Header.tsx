@@ -159,7 +159,16 @@ export function Header() {
                       <DropdownMenuItem asChild>
                         <Link to="/profile" className="flex items-center">
                           <User className="mr-2 h-4 w-4" />
-                          Profile
+                          My Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link
+                          to={`/user/${user?.id}`}
+                          className="flex items-center"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Visit Profile
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
