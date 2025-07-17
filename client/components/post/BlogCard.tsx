@@ -34,10 +34,15 @@ export function BlogCard({ post, className }: BlogCardProps) {
   });
 
   return (
-    <article className={cn("flex flex-col gap-4 bg-white", className)}>
+    <article
+      className={cn(
+        "flex flex-col gap-4 bg-white md:justify-between",
+        className,
+      )}
+    >
       {/* Title */}
       <Link to={`/post/${post.id}`}>
-        <h2 className="text-base font-bold text-[#181D27] leading-7 line-clamp-2 hover:text-[#0093DD] transition-colors">
+        <h2 className="text-base font-bold text-[#181D27] leading-7 line-clamp-2 hover:text-[#0093DD] transition-colors md:text-lg md:leading-8">
           {post.title}
         </h2>
       </Link>
@@ -59,7 +64,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
 
       {/* Description */}
       <Link to={`/post/${post.id}`}>
-        <p className="text-xs font-normal text-[#181D27] leading-6 line-clamp-2">
+        <p className="text-xs font-normal text-[#181D27] leading-6 line-clamp-2 md:text-sm md:leading-7 md:flex-1">
           {post.content}
         </p>
       </Link>
