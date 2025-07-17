@@ -79,12 +79,16 @@ export default function Index() {
     }
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-3 xl:grid-cols-4">
         {posts.map((post, index) => (
-          <div key={post.id}>
-            <BlogCard post={post} />
+          <div key={post.id} className="md:space-y-0">
+            <BlogCard
+              post={post}
+              className="md:border md:border-[#D5D7DA] md:rounded-lg md:p-4 md:h-full md:flex md:flex-col"
+            />
+            {/* Only show divider on mobile */}
             {index < posts.length - 1 && (
-              <div className="w-full h-px bg-[#D5D7DA] mt-4" />
+              <div className="w-full h-px bg-[#D5D7DA] mt-4 md:hidden" />
             )}
           </div>
         ))}
@@ -98,10 +102,10 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
-      <div className="w-full max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
+      <div className="w-full max-w-sm mx-auto md:max-w-3xl lg:max-w-6xl xl:max-w-7xl">
         {/* Recommend For You Section */}
         {isAuthenticated && (
-          <section className="px-4 py-6">
+          <section className="px-4 py-6 md:px-8 lg:px-12">
             <h1 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
               Recommend For You
             </h1>
@@ -131,7 +135,7 @@ export default function Index() {
         <div className="w-full h-1.5 bg-[#D5D7DA]" />
 
         {/* Most Liked Section */}
-        <section className="px-4 py-6">
+        <section className="px-4 py-6 md:px-8 lg:px-12">
           <h2 className="text-xl font-bold text-[#181D27] leading-9 mb-4">
             Most liked
           </h2>
