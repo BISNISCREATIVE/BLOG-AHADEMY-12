@@ -684,6 +684,7 @@ export default function Profile() {
                           <Button
                             size="sm"
                             variant="outline"
+                            onClick={() => setEditPostModal(post)}
                             className="flex items-center gap-1"
                           >
                             <Pencil className="h-4 w-4" />
