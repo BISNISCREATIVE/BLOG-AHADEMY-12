@@ -1,6 +1,21 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  getAllPosts,
+  getRecommendedPosts,
+  getMostLikedPosts,
+  getMyPosts,
+  searchPosts,
+  getPostsByUser,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+  likePost,
+} from "./routes/posts";
+import { login, register, getCurrentUser, logout } from "./routes/auth";
+import { authenticateToken, optionalAuth } from "./middleware/auth";
 
 export function createServer() {
   const app = express();
@@ -16,6 +31,25 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Authentication routes
+  app.post("/api/auth/login", login);
+  app.post("/api/auth/register", register);
+  app.get("/api/auth/me", authenticateToken, getCurrentUser);
+  app.post("/api/auth/logout", logout);
+
+  // Posts routes
+  app.get("/api/posts", getAllPosts);
+  app.get("/api/posts/recommended", authenticateToken, getRecommendedPosts);
+  app.get("/api/posts/most-liked", getMostLikedPosts);
+  app.get("/api/posts/my-posts", authenticateToken, getMyPosts);
+  app.get("/api/posts/search", searchPosts);
+  app.get("/api/posts/by-user/:userId", getPostsByUser);
+  app.get("/api/posts/:id", getPost);
+  app.post("/api/posts", authenticateToken, createPost);
+  app.patch("/api/posts/:id", authenticateToken, updatePost);
+  app.delete("/api/posts/:id", authenticateToken, deletePost);
+  app.post("/api/posts/:id/like", optionalAuth, likePost);
 
   return app;
 }
