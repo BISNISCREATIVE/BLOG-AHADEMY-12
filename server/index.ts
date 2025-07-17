@@ -15,6 +15,11 @@ import {
   likePost,
 } from "./routes/posts";
 import { login, register, getCurrentUser, logout } from "./routes/auth";
+import {
+  getPostComments,
+  createComment,
+  deleteComment,
+} from "./routes/comments";
 import { authenticateToken, optionalAuth } from "./middleware/auth";
 
 export function createServer() {
@@ -50,6 +55,11 @@ export function createServer() {
   app.patch("/api/posts/:id", authenticateToken, updatePost);
   app.delete("/api/posts/:id", authenticateToken, deletePost);
   app.post("/api/posts/:id/like", optionalAuth, likePost);
+
+  // Comments routes
+  app.get("/api/posts/:postId/comments", getPostComments);
+  app.post("/api/posts/:postId/comments", authenticateToken, createComment);
+  app.delete("/api/comments/:id", authenticateToken, deleteComment);
 
   return app;
 }
