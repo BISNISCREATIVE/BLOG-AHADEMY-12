@@ -27,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { validateFile, createFilePreview } from "@/lib/upload";
 import {
   Pencil,
   Trash2,
@@ -185,36 +186,38 @@ function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
     onClose();
   };
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
+      const validation = validateFile(file);
+
+      if (!validation.valid) {
         toast({
-          title: "File too large",
-          description: "File size should be less than 5MB",
+          title: "Invalid file",
+          description: validation.error,
           variant: "destructive",
         });
         return;
       }
 
-      if (!file.type.startsWith("image/")) {
+      try {
+        setAvatarFile(file);
+        const preview = await createFilePreview(file);
+        setAvatarPreview(preview);
+
         toast({
-          title: "Invalid file type",
-          description: "Please select an image file",
+          title: "Photo selected",
+          description: "Your new profile photo has been selected.",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to process the image file.",
           variant: "destructive",
         });
-        return;
       }
-
-      setAvatarFile(file);
-
-      // Create preview URL
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
     }
   };
 
