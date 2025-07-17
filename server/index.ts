@@ -20,6 +20,7 @@ import {
   createComment,
   deleteComment,
 } from "./routes/comments";
+import { getUserById, getAllUsers } from "./routes/users";
 import { authenticateToken, optionalAuth } from "./middleware/auth";
 
 export function createServer() {
@@ -60,6 +61,10 @@ export function createServer() {
   app.get("/api/posts/:postId/comments", getPostComments);
   app.post("/api/posts/:postId/comments", authenticateToken, createComment);
   app.delete("/api/comments/:id", authenticateToken, deleteComment);
+
+  // Users routes
+  app.get("/api/users", getAllUsers);
+  app.get("/api/users/:id", getUserById);
 
   return app;
 }
