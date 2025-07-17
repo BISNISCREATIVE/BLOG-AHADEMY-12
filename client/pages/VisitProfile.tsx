@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BlogCard } from "@/components/post/BlogCard";
 import { Footer } from "@/components/layout/Footer";
 import { User, Post } from "@shared/types";
+import apiClient from "@/lib/api";
 
 export default function VisitProfile() {
   const { userId } = useParams<{ userId: string }>();
