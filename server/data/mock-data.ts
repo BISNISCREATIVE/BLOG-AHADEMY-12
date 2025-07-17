@@ -418,4 +418,63 @@ export class MockDataService {
 
     return this.users[userIndex];
   }
+
+  // Comments methods
+  static getCommentsByPostId(postId: number): Comment[] {
+    return this.comments
+      .filter((comment) => comment.postId === postId)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+  }
+
+  static createComment(commentData: {
+    content: string;
+    authorId: number;
+    postId: number;
+  }): Comment {
+    const author = this.users.find((u) => u.id === commentData.authorId);
+    if (!author) {
+      throw new Error("Author not found");
+    }
+
+    const newComment: Comment = {
+      id: this.nextCommentId++,
+      content: commentData.content,
+      author: author as Author,
+      createdAt: new Date().toISOString(),
+      postId: commentData.postId,
+    };
+
+    this.comments.push(newComment);
+
+    // Update comment count on the post
+    const post = this.posts.find((p) => p.id === commentData.postId);
+    if (post) {
+      post.comments += 1;
+    }
+
+    return newComment;
+  }
+
+  static deleteComment(id: number): boolean {
+    const commentIndex = this.comments.findIndex(
+      (comment) => comment.id === id,
+    );
+    if (commentIndex === -1) {
+      return false;
+    }
+
+    const comment = this.comments[commentIndex];
+    this.comments.splice(commentIndex, 1);
+
+    // Update comment count on the post
+    const post = this.posts.find((p) => p.id === comment.postId);
+    if (post && post.comments > 0) {
+      post.comments -= 1;
+    }
+
+    return true;
+  }
 }
