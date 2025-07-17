@@ -357,9 +357,9 @@ export default function Detail() {
             </Button>
           </div>
 
-          {/* New Comment Form - Desktop */}
+          {/* New Comment Form */}
           {isAuthenticated && (
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <div className="flex gap-3">
                 <Avatar className="h-10 w-10 shrink-0">
                   <AvatarImage src={user?.avatarUrl} alt={user?.name} />
@@ -375,10 +375,10 @@ export default function Detail() {
                     placeholder="Enter your comment"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    className="min-h-[80px] resize-none border-[#D5D7DA] focus:border-[#0093DD] focus:ring-[#0093DD]"
+                    className="min-h-[80px] md:min-h-[100px] resize-none border-[#D5D7DA] focus:border-[#0093DD] focus:ring-[#0093DD]"
                   />
                   <Button
-                    className="mt-3 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white px-8"
+                    className="mt-3 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white px-6 md:px-8 text-sm rounded-full"
                     disabled={
                       !newComment.trim() || createCommentMutation.isPending
                     }
