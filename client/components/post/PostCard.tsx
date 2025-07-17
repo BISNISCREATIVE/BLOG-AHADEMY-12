@@ -49,13 +49,15 @@ export function PostCard({ post, className }: PostCardProps) {
 
         <CardContent className="p-6">
           <div className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
 
             <h3 className="text-xl font-semibold line-clamp-2 leading-tight">
               {post.title}
