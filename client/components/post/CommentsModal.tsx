@@ -13,7 +13,6 @@ import { Comment } from "@shared/types";
 import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface CommentsModalProps {
