@@ -818,6 +818,14 @@ export default function Profile() {
         />
       )}
 
+      {editPostModal && (
+        <EditPostModal
+          post={editPostModal}
+          isOpen={true}
+          onClose={() => setEditPostModal(null)}
+        />
+      )}
+
       <EditProfileModal
         user={user}
         isOpen={editProfileOpen}
