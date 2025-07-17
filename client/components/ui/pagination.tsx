@@ -51,13 +51,18 @@ export function Pagination({
   };
 
   return (
-    <div className={cn("flex justify-center items-center bg-white", className)}>
+    <div
+      className={cn(
+        "flex justify-center items-center bg-white py-4",
+        className,
+      )}
+    >
       {/* Previous Button */}
       <Button
         variant="ghost"
         onClick={handlePrevious}
         disabled={currentPage === 1}
-        className="h-auto p-0 hover:bg-transparent disabled:opacity-50"
+        className="h-auto p-0 hover:bg-transparent disabled:opacity-50 mr-2 md:mr-4"
       >
         <div className="flex items-center gap-1.5">
           <ChevronLeft className="w-6 h-6 text-[#181D27]" />
@@ -103,7 +108,7 @@ export function Pagination({
         variant="ghost"
         onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="h-auto p-0 hover:bg-transparent disabled:opacity-50"
+        className="h-auto p-0 hover:bg-transparent disabled:opacity-50 ml-2 md:ml-4"
       >
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-normal text-[#181D27] leading-6">
