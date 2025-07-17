@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import VisitProfile from "./pages/VisitProfile";
 import Write from "./pages/Write";
 import Edit from "./pages/Edit";
+import CrudDemo from "./pages/CrudDemo";
 import NotFound from "./pages/NotFound";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
