@@ -100,27 +100,22 @@ export function Header() {
               <>
                 {/* Desktop Write Post Button and Profile Menu */}
                 <div className="hidden md:flex items-center gap-3">
-                  <Button
-                    asChild
-                    className="h-10 px-4 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white flex items-center gap-2"
-                  >
-                    <Link to="/write">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        asChild
+                        className="h-10 px-4 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white flex items-center gap-2"
                       >
-                        <path
-                          d="M12.5 3.5L13.5 4.5L5 13H3V11L11.5 2.5L12.5 3.5Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          fill="none"
-                        />
-                      </svg>
-                      Write Post
-                    </Link>
-                  </Button>
+                        <Link to="/write">
+                          <Edit className="h-4 w-4" />
+                          Write Post
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Create a new blog post</p>
+                    </TooltipContent>
+                  </Tooltip>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
