@@ -91,8 +91,24 @@ export function Header() {
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
-              {/* Desktop Profile Menu */}
-              <div className="hidden md:block">
+              {/* Desktop Write Post Button and Profile Menu */}
+              <div className="hidden md:flex items-center gap-3">
+                <Button
+                  asChild
+                  className="h-10 px-4 bg-[#0093DD] hover:bg-[#0093DD]/90 text-white flex items-center gap-2"
+                >
+                  <Link to="/write">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M12.5 3.5L13.5 4.5L5 13H3V11L11.5 2.5L12.5 3.5Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        fill="none"
+                      />
+                    </svg>
+                    Write Post
+                  </Link>
+                </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
