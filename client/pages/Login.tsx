@@ -78,6 +78,15 @@ export default function Login() {
           <p className="text-muted-foreground mt-2">
             Sign in to your account to continue
           </p>
+          <div className="mt-4 p-3 bg-muted rounded-lg">
+            <p className="text-sm font-medium">Demo Credentials:</p>
+            <p className="text-sm text-muted-foreground">
+              Email: john@example.com (or any demo user email)
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Password: any password works
+            </p>
+          </div>
         </div>
 
         {/* Login Form */}
