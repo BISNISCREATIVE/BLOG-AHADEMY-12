@@ -1,4 +1,4 @@
-import { Post, User, Author, PostsResponse } from "@shared/types";
+import { Post, User, Author, PostsResponse, Comment } from "@shared/types";
 
 export const mockUsers: User[] = [
   {
@@ -139,6 +139,77 @@ export const mockPosts: Post[] = [
     createdAt: "2024-01-08T10:15:00Z",
     likes: 112,
     comments: 41,
+  },
+];
+
+export const mockComments: Comment[] = [
+  {
+    id: 1,
+    content: "This is super insightful — thanks for sharing!",
+    author: {
+      id: 2,
+      name: "Clarissa",
+      email: "clarissa@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T10:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 2,
+    content:
+      "Exactly what I needed to read today. Frontend is evolving so fast!",
+    author: {
+      id: 3,
+      name: "Marco",
+      email: "marco@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T11:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 3,
+    content: "Great breakdown! You made complex ideas sound simple.",
+    author: {
+      id: 4,
+      name: "Michael Sailor",
+      email: "michael@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T12:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 4,
+    content:
+      "As a beginner in frontend, this motivates me a lot. Appreciate it!",
+    author: {
+      id: 5,
+      name: "Jessica Jane",
+      email: "jessica@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T13:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 5,
+    content:
+      "Well-written and straight to the point. Keep posting content like this!",
+    author: {
+      id: 6,
+      name: "Alexandra",
+      email: "alexandra@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T14:00:00Z",
+    postId: 1,
   },
 ];
 
