@@ -234,16 +234,24 @@ export default function Detail() {
 
           {/* Author Info */}
           <div className="flex items-center gap-3 mb-6">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={post.author.avatarUrl} alt={post.author.name} />
-              <AvatarFallback>
-                {post.author.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <Link to={`/user/${post.author.id}`}>
+              <Avatar className="h-12 w-12 hover:opacity-80 transition-opacity">
+                <AvatarImage
+                  src={post.author.avatarUrl}
+                  alt={post.author.name}
+                />
+                <AvatarFallback>
+                  {post.author.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
             <div>
-              <h3 className="font-semibold text-[#181D27]">
+              <Link
+                to={`/user/${post.author.id}`}
+                className="font-semibold text-[#181D27] hover:text-[#0093DD] transition-colors"
+              >
                 {post.author.name}
-              </h3>
+              </Link>
               <p className="text-sm text-[#535862]">
                 {formatDistanceToNow(new Date(post.createdAt), {
                   addSuffix: true,
