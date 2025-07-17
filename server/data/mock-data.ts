@@ -232,10 +232,10 @@ export class MockDataService {
   }
 
   static getRecommendedPosts(page = 1, limit = 10): PostsResponse {
-    // Get first 10 posts (with images) for carousel
+    // Get first 50 posts (with images) for carousel
     const postsWithImages = this.posts
       .filter((post) => post.imageUrl)
-      .slice(0, 10);
+      .slice(0, 50);
 
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
