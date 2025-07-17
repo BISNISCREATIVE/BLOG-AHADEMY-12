@@ -117,45 +117,6 @@ export const mockPosts: Post[] = [
     likes: 20,
     comments: 20,
   },
-  {
-    id: 6,
-    title: "Database Design Fundamentals",
-    content:
-      "Good database design is the foundation of any robust application. Learn about normalization, indexing, and relationship modeling to create efficient database schemas.",
-    tags: ["database", "sql", "design"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&h=400&fit=crop",
-    author: mockUsers[1] as Author,
-    createdAt: "2024-01-10T16:00:00Z",
-    likes: 73,
-    comments: 19,
-  },
-  {
-    id: 7,
-    title: "Performance Optimization in React Applications",
-    content:
-      "Learn essential techniques for optimizing React application performance, including memoization, lazy loading, and efficient re-rendering strategies.",
-    tags: ["react", "performance", "optimization"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
-    author: mockUsers[2] as Author,
-    createdAt: "2024-01-09T13:30:00Z",
-    likes: 95,
-    comments: 27,
-  },
-  {
-    id: 8,
-    title: "Microservices Architecture Patterns",
-    content:
-      "Dive into microservices architecture patterns, including service discovery, API gateways, and distributed system challenges. Learn when and how to implement microservices.",
-    tags: ["microservices", "architecture", "distributed-systems"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
-    author: mockUsers[3] as Author,
-    createdAt: "2024-01-08T10:15:00Z",
-    likes: 112,
-    comments: 41,
-  },
 ];
 
 export const mockComments: Comment[] = [
