@@ -209,6 +209,19 @@ export function Header() {
                   </Link>
                 </Button>
                 <Button
+                  asChild
+                  variant="ghost"
+                  className="w-full justify-start"
+                >
+                  <Link
+                    to="/crud-demo"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    CRUD Demo
+                  </Link>
+                </Button>
+                <Button
                   variant="ghost"
                   className="w-full justify-start"
                   onClick={() => {
