@@ -25,12 +25,13 @@ const updatePostSchema = z.object({
   content: z.string().min(1).optional(),
   tags: z
     .string()
-    .transform((str) =>
-      str
+    .transform((str) => {
+      if (!str || str.trim() === "") return [];
+      return str
         .split(",")
         .map((tag) => tag.trim())
-        .filter(Boolean),
-    )
+        .filter(Boolean);
+    })
     .optional(),
 });
 
