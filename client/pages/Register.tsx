@@ -67,14 +67,14 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md space-y-8 bg-white shadow-lg border-0">
-        <CardHeader className="space-y-1 pb-6">
+      <Card className="w-full max-w-md bg-white shadow-lg border border-[#D5D7DA] rounded-xl">
+        <CardHeader className="space-y-1 pb-4 pt-8">
           <CardTitle className="text-2xl font-bold text-center text-[#181D27]">
             Sign Up
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <CardContent className="space-y-6 px-8 pb-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Field */}
             <div className="space-y-2">
               <Label
@@ -95,9 +95,7 @@ export default function Register() {
                 }`}
               />
               {errors.name && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.name.message}
-                </p>
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
               )}
             </div>
 
@@ -121,9 +119,7 @@ export default function Register() {
                 }`}
               />
               {errors.email && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.email.message}
-                </p>
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
               )}
             </div>
 
@@ -160,9 +156,7 @@ export default function Register() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.password.message}
-                </p>
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
               )}
             </div>
 
@@ -199,9 +193,7 @@ export default function Register() {
                 </button>
               </div>
               {errors.password_confirmation && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.password_confirmation.message}
-                </p>
+                <p className="text-sm text-red-500 mt-1">Error Text Helper</p>
               )}
             </div>
 
