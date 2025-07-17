@@ -1,4 +1,4 @@
-import { Post, User, Author, PostsResponse } from "@shared/types";
+import { Post, User, Author, PostsResponse, Comment } from "@shared/types";
 
 export const mockUsers: User[] = [
   {
@@ -33,112 +33,135 @@ export const mockUsers: User[] = [
     avatarUrl:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
   },
-];
-
-export const mockPosts: Post[] = [
-  {
-    id: 1,
-    title: "Getting Started with React 18",
-    content:
-      "React 18 introduces exciting new features including concurrent rendering, automatic batching, and new hooks. In this comprehensive guide, we'll explore how to leverage these features to build better user experiences.",
-    tags: ["react", "javascript", "frontend"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop",
-    author: mockUsers[0] as Author,
-    createdAt: "2024-01-15T10:00:00Z",
-    likes: 42,
-    comments: 8,
-  },
-  {
-    id: 2,
-    title: "Building Scalable APIs with Node.js",
-    content:
-      "Learn how to design and implement scalable REST APIs using Node.js, Express, and modern best practices. We'll cover authentication, validation, error handling, and performance optimization.",
-    tags: ["nodejs", "api", "backend"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
-    author: mockUsers[1] as Author,
-    createdAt: "2024-01-14T15:30:00Z",
-    likes: 38,
-    comments: 12,
-  },
-  {
-    id: 3,
-    title: "CSS Grid vs Flexbox: When to Use Which",
-    content:
-      "Both CSS Grid and Flexbox are powerful layout systems, but they serve different purposes. This article explains when to use each one and provides practical examples.",
-    tags: ["css", "layout", "design"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop",
-    author: mockUsers[2] as Author,
-    createdAt: "2024-01-13T09:15:00Z",
-    likes: 67,
-    comments: 15,
-  },
-  {
-    id: 4,
-    title: "TypeScript Best Practices for Large Projects",
-    content:
-      "As your TypeScript project grows, maintaining type safety and code quality becomes crucial. Here are proven strategies for organizing and scaling TypeScript codebases.",
-    tags: ["typescript", "best-practices", "architecture"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
-    author: mockUsers[3] as Author,
-    createdAt: "2024-01-12T14:20:00Z",
-    likes: 89,
-    comments: 23,
-  },
   {
     id: 5,
-    title: "Modern Authentication Patterns",
-    content:
-      "Explore modern authentication patterns including JWT, OAuth 2.0, and passwordless authentication. Learn how to implement secure user authentication in your applications.",
-    tags: ["authentication", "security", "oauth"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&h=400&fit=crop",
-    author: mockUsers[0] as Author,
-    createdAt: "2024-01-11T11:45:00Z",
-    likes: 156,
-    comments: 34,
+    name: "Jessica Jane",
+    email: "jessica@example.com",
+    headline: "Product Designer",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
   },
   {
     id: 6,
-    title: "Database Design Fundamentals",
-    content:
-      "Good database design is the foundation of any robust application. Learn about normalization, indexing, and relationship modeling to create efficient database schemas.",
-    tags: ["database", "sql", "design"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&h=400&fit=crop",
-    author: mockUsers[1] as Author,
-    createdAt: "2024-01-10T16:00:00Z",
-    likes: 73,
-    comments: 19,
+    name: "Alexandra",
+    email: "alexandra@example.com",
+    headline: "Frontend Developer",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+  },
+];
+
+// Create sequential posts for carousel display
+const createSequentialPosts = (): Post[] => {
+  const posts: Post[] = [];
+  const baseContent =
+    "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.";
+  const carouselImage =
+    "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2F65ece06449fd457695abcb19dacc53c5?format=webp&width=800";
+
+  // Create 10 posts for "Recommend For You" carousel
+  for (let i = 1; i <= 10; i++) {
+    posts.push({
+      id: i,
+      title: `5 Reasons to Learn Frontend Development in 2025 Post${i}`,
+      content: baseContent,
+      tags: ["Programming", "Frontend", "Coding"],
+      imageUrl: carouselImage,
+      author: mockUsers[(i - 1) % mockUsers.length] as Author,
+      createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(), // Each post 1 hour apart
+      likes: 20 + i,
+      comments: 20,
+    });
+  }
+
+  // Add additional posts for "Most Liked" (without images)
+  for (let i = 11; i <= 20; i++) {
+    posts.push({
+      id: i,
+      title: `5 Reasons to Learn Frontend Development in 2025`,
+      content: baseContent,
+      tags: ["Programming", "Frontend", "Coding"],
+      imageUrl: undefined, // No images for Most Liked posts
+      author: mockUsers[(i - 1) % mockUsers.length] as Author,
+      createdAt: new Date(Date.now() - i * 60 * 60 * 1000).toISOString(),
+      likes: 30 - i + 10, // Higher likes for "Most Liked"
+      comments: 15,
+    });
+  }
+
+  return posts;
+};
+
+export const mockPosts: Post[] = createSequentialPosts();
+
+export const mockComments: Comment[] = [
+  {
+    id: 1,
+    content: "This is super insightful — thanks for sharing!",
+    author: {
+      id: 2,
+      name: "Clarissa",
+      email: "clarissa@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T10:00:00Z",
+    postId: 1,
   },
   {
-    id: 7,
-    title: "Performance Optimization in React Applications",
+    id: 2,
     content:
-      "Learn essential techniques for optimizing React application performance, including memoization, lazy loading, and efficient re-rendering strategies.",
-    tags: ["react", "performance", "optimization"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
-    author: mockUsers[2] as Author,
-    createdAt: "2024-01-09T13:30:00Z",
-    likes: 95,
-    comments: 27,
+      "Exactly what I needed to read today. Frontend is evolving so fast!",
+    author: {
+      id: 3,
+      name: "Marco",
+      email: "marco@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T11:00:00Z",
+    postId: 1,
   },
   {
-    id: 8,
-    title: "Microservices Architecture Patterns",
+    id: 3,
+    content: "Great breakdown! You made complex ideas sound simple.",
+    author: {
+      id: 4,
+      name: "Michael Sailor",
+      email: "michael@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T12:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 4,
     content:
-      "Dive into microservices architecture patterns, including service discovery, API gateways, and distributed system challenges. Learn when and how to implement microservices.",
-    tags: ["microservices", "architecture", "distributed-systems"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
-    author: mockUsers[3] as Author,
-    createdAt: "2024-01-08T10:15:00Z",
-    likes: 112,
-    comments: 41,
+      "As a beginner in frontend, this motivates me a lot. Appreciate it!",
+    author: {
+      id: 5,
+      name: "Jessica Jane",
+      email: "jessica@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T13:00:00Z",
+    postId: 1,
+  },
+  {
+    id: 5,
+    content:
+      "Well-written and straight to the point. Keep posting content like this!",
+    author: {
+      id: 6,
+      name: "Alexandra",
+      email: "alexandra@example.com",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b1d5?w=150&h=150&fit=crop&crop=face",
+    },
+    createdAt: "2025-03-27T14:00:00Z",
+    postId: 1,
   },
 ];
 
@@ -146,8 +169,10 @@ export const mockPosts: Post[] = [
 export class MockDataService {
   private static posts = [...mockPosts];
   private static users = [...mockUsers];
+  private static comments = [...mockComments];
   private static nextPostId = Math.max(...mockPosts.map((p) => p.id)) + 1;
   private static nextUserId = Math.max(...mockUsers.map((u) => u.id)) + 1;
+  private static nextCommentId = Math.max(...mockComments.map((c) => c.id)) + 1;
 
   // Posts methods
   static getAllPosts(
@@ -165,6 +190,41 @@ export class MockDataService {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       );
     }
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedPosts = sortedPosts.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedPosts,
+      total: sortedPosts.length,
+      page,
+      lastPage: Math.ceil(sortedPosts.length / limit),
+    };
+  }
+
+  static getRecommendedPosts(page = 1, limit = 10): PostsResponse {
+    // Get first 10 posts (with images) for carousel
+    const postsWithImages = this.posts
+      .filter((post) => post.imageUrl)
+      .slice(0, 10);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedPosts = postsWithImages.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedPosts,
+      total: postsWithImages.length,
+      page,
+      lastPage: Math.ceil(postsWithImages.length / limit),
+    };
+  }
+
+  static getMostLikedPosts(page = 1, limit = 10): PostsResponse {
+    // Get posts without images, sorted by likes
+    const postsWithoutImages = this.posts.filter((post) => !post.imageUrl);
+    const sortedPosts = postsWithoutImages.sort((a, b) => b.likes - a.likes);
 
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
@@ -344,5 +404,64 @@ export class MockDataService {
     };
 
     return this.users[userIndex];
+  }
+
+  // Comments methods
+  static getCommentsByPostId(postId: number): Comment[] {
+    return this.comments
+      .filter((comment) => comment.postId === postId)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+  }
+
+  static createComment(commentData: {
+    content: string;
+    authorId: number;
+    postId: number;
+  }): Comment {
+    const author = this.users.find((u) => u.id === commentData.authorId);
+    if (!author) {
+      throw new Error("Author not found");
+    }
+
+    const newComment: Comment = {
+      id: this.nextCommentId++,
+      content: commentData.content,
+      author: author as Author,
+      createdAt: new Date().toISOString(),
+      postId: commentData.postId,
+    };
+
+    this.comments.push(newComment);
+
+    // Update comment count on the post
+    const post = this.posts.find((p) => p.id === commentData.postId);
+    if (post) {
+      post.comments += 1;
+    }
+
+    return newComment;
+  }
+
+  static deleteComment(id: number): boolean {
+    const commentIndex = this.comments.findIndex(
+      (comment) => comment.id === id,
+    );
+    if (commentIndex === -1) {
+      return false;
+    }
+
+    const comment = this.comments[commentIndex];
+    this.comments.splice(commentIndex, 1);
+
+    // Update comment count on the post
+    const post = this.posts.find((p) => p.id === comment.postId);
+    if (post && post.comments > 0) {
+      post.comments -= 1;
+    }
+
+    return true;
   }
 }

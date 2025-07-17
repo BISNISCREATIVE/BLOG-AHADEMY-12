@@ -31,6 +31,7 @@ export interface Comment {
   content: string;
   author: Author;
   createdAt: string;
+  postId: number;
 }
 
 export interface PostsResponse {
