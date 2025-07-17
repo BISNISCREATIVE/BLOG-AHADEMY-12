@@ -4,11 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Post } from "@shared/types";
-import { Heart, MessageCircle } from "lucide-react";
 import { useLikePost } from "@/hooks/use-posts";
 import { useAuth } from "@/hooks/use-auth";
 import { useComments } from "@/hooks/use-comments";
 import { CommentsModal } from "@/components/post/CommentsModal";
+import { LikeIcon, CommentIcon, ViewsIcon } from "@/components/ui/custom-icons";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 
