@@ -399,20 +399,25 @@ export default function Detail() {
           <div className="space-y-6">
             {comments.slice(0, 3).map((comment) => (
               <div key={comment.id} className="flex gap-3">
-                <Avatar className="h-10 w-10 shrink-0">
-                  <AvatarImage
-                    src={comment.author.avatarUrl}
-                    alt={comment.author.name}
-                  />
-                  <AvatarFallback className="bg-[#F8F9FA] text-[#535862]">
-                    {comment.author.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                <Link to={`/user/${comment.author.id}`}>
+                  <Avatar className="h-10 w-10 shrink-0 hover:opacity-80 transition-opacity">
+                    <AvatarImage
+                      src={comment.author.avatarUrl}
+                      alt={comment.author.name}
+                    />
+                    <AvatarFallback className="bg-[#F8F9FA] text-[#535862]">
+                      {comment.author.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-sm text-[#181D27]">
+                    <Link
+                      to={`/user/${comment.author.id}`}
+                      className="font-medium text-sm text-[#181D27] hover:text-[#0093DD] transition-colors"
+                    >
                       {comment.author.name}
-                    </span>
+                    </Link>
                     <span className="text-xs text-[#535862]">
                       {formatDistanceToNow(new Date(comment.createdAt), {
                         addSuffix: false,
