@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useMyPosts, useDeletePost, useLikePost } from "@/hooks/use-posts";
+import {
+  useMyPosts,
+  useDeletePost,
+  useLikePost,
+  useUpdatePost,
+} from "@/hooks/use-posts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,6 +45,7 @@ import {
   Settings,
   User,
   Lock,
+  X,
 } from "lucide-react";
 import { Post } from "@shared/types";
 
