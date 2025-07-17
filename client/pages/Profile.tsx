@@ -392,17 +392,19 @@ export default function Profile() {
                           <p className="text-muted-foreground mb-3 line-clamp-2">
                             {post.content}
                           </p>
-                          <div className="flex gap-2 mb-3">
-                            {post.tags.map((tag) => (
-                              <Badge
-                                key={tag}
-                                variant="secondary"
-                                className="text-xs"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
+                          {post.tags && post.tags.length > 0 && (
+                            <div className="flex gap-2 mb-3">
+                              {post.tags.map((tag) => (
+                                <Badge
+                                  key={tag}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
                           <div className="text-sm text-muted-foreground">
                             {new Date(post.createdAt).toLocaleDateString()}
                           </div>
