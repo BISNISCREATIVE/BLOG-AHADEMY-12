@@ -15,6 +15,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import apiClient from "@/lib/api";
 
 interface CommentsModalProps {
   isOpen: boolean;
