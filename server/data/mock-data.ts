@@ -203,6 +203,41 @@ export class MockDataService {
     };
   }
 
+  static getRecommendedPosts(page = 1, limit = 10): PostsResponse {
+    // Get first 10 posts (with images) for carousel
+    const postsWithImages = this.posts
+      .filter((post) => post.imageUrl)
+      .slice(0, 10);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedPosts = postsWithImages.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedPosts,
+      total: postsWithImages.length,
+      page,
+      lastPage: Math.ceil(postsWithImages.length / limit),
+    };
+  }
+
+  static getMostLikedPosts(page = 1, limit = 10): PostsResponse {
+    // Get posts without images, sorted by likes
+    const postsWithoutImages = this.posts.filter((post) => !post.imageUrl);
+    const sortedPosts = postsWithoutImages.sort((a, b) => b.likes - a.likes);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedPosts = sortedPosts.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedPosts,
+      total: sortedPosts.length,
+      page,
+      lastPage: Math.ceil(sortedPosts.length / limit),
+    };
+  }
+
   static getPostById(id: number): Post | null {
     return this.posts.find((post) => post.id === id) || null;
   }
