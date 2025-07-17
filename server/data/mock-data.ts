@@ -38,16 +38,16 @@ export const mockUsers: User[] = [
 export const mockPosts: Post[] = [
   {
     id: 1,
-    title: "Getting Started with React 18",
+    title: "5 Reasons to Learn Frontend Development in 2025",
     content:
-      "React 18 introduces exciting new features including concurrent rendering, automatic batching, and new hooks. In this comprehensive guide, we'll explore how to leverage these features to build better user experiences.",
-    tags: ["react", "javascript", "frontend"],
+      "Frontend development is more than just building beautiful user interfaces — it's about crafting user experiences that are fast, accessible, and intuitive. As we move into 2025, the demand for skilled frontend developers continues to rise.\n\nHere are 5 reasons why you should start learning frontend development today:\n\n1. High Industry Demand\n\nTech companies, startups, and even traditional businesses are constantly looking for frontend developers to help them deliver high-quality digital experiences.\n\n2. Powerful and Beginner-Friendly Tools\n\nModern frameworks like React, Vue, and Svelte make it easier than ever to build interactive UIs. Their growing ecosystems and active communities mean you'll find support at every step.\n\n3. Creative Freedom\n\nFrontend development allows you to bring your design ideas to life. From animations to responsive layouts, your creativity directly impacts how users engage with a product.\n\n4. Rapid Career Growth\n\nWith roles like UI Developer, React Developer, and Frontend Engineer, you'll find plenty of opportunities with competitive salaries and growth potential.\n\n5. Essential for Fullstack Development\n\nUnderstanding frontend is crucial if you want to become a fullstack developer. It complements your backend knowledge and enables you to build complete applications.\n\nConclusion:\n\nIf you're interested in building things that users interact with daily, frontend development is the path to take. Whether you're a designer learning to code or a backend developer exploring the frontend, 2025 is the perfect year to start.",
+    tags: ["Programming", "Frontend", "Coding"],
     imageUrl:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop",
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0814687c37c496a970fdefb6a24c7bf%2Fb847598d7d6f40138aba2309c8795157?format=webp&width=800",
     author: mockUsers[0] as Author,
-    createdAt: "2024-01-15T10:00:00Z",
-    likes: 42,
-    comments: 8,
+    createdAt: "2025-05-27T10:00:00Z",
+    likes: 20,
+    comments: 20,
   },
   {
     id: 2,
