@@ -217,8 +217,10 @@ export const mockComments: Comment[] = [
 export class MockDataService {
   private static posts = [...mockPosts];
   private static users = [...mockUsers];
+  private static comments = [...mockComments];
   private static nextPostId = Math.max(...mockPosts.map((p) => p.id)) + 1;
   private static nextUserId = Math.max(...mockUsers.map((u) => u.id)) + 1;
+  private static nextCommentId = Math.max(...mockComments.map((c) => c.id)) + 1;
 
   // Posts methods
   static getAllPosts(
