@@ -263,7 +263,20 @@ export function Header() {
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <User className="h-4 w-4 mr-2" />
-                      Profile
+                      My Profile
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="w-full justify-start"
+                  >
+                    <Link
+                      to={`/user/${user?.id}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Visit Profile
                     </Link>
                   </Button>
                   <Button
