@@ -48,7 +48,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
       </Link>
 
       {/* Tags - only show if authenticated */}
-      {isAuthenticated && (
+      {isAuthenticated && post.tags && post.tags.length > 0 && (
         <div className="flex items-start gap-2 flex-wrap">
           {post.tags.slice(0, 3).map((tag) => (
             <Badge
