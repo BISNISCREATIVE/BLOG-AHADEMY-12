@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { MobileAuthModal } from "@/components/auth/MobileAuthModal";
 import { useAuth } from "@/hooks/use-auth";
 import { Search, Menu, X, User, LogOut, Edit } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showMobileAuth, setShowMobileAuth] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
 
@@ -158,18 +160,6 @@ export function Header() {
                           Profile
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/write" className="flex items-center">
-                          <Edit className="mr-2 h-4 w-4" />
-                          Write Post
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/crud-demo" className="flex items-center">
-                          <User className="mr-2 h-4 w-4" />
-                          CRUD Demo
-                        </Link>
-                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={logout}
@@ -202,12 +192,16 @@ export function Header() {
               <>
                 {/* Desktop Auth Buttons */}
                 <div className="hidden md:flex items-center gap-2">
-                  <Button asChild variant="ghost" className="text-sm">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="text-sm text-[#0093DD] hover:text-[#0093DD]/80"
+                  >
                     <Link to="/login">Login</Link>
                   </Button>
                   <Button
                     asChild
-                    className="text-sm bg-[#0093DD] hover:bg-[#0093DD]/90"
+                    className="text-sm bg-[#0093DD] hover:bg-[#0093DD]/90 text-white px-6"
                   >
                     <Link to="/register">Register</Link>
                   </Button>
@@ -218,9 +212,9 @@ export function Header() {
                   variant="ghost"
                   size="icon"
                   className="md:hidden"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  onClick={() => setShowMobileAuth(true)}
                 >
-                  {isMobileMenuOpen ? <X /> : <Menu />}
+                  <Menu />
                 </Button>
               </>
             )}
@@ -246,7 +240,7 @@ export function Header() {
               </form>
 
               {/* Mobile Navigation */}
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <div className="space-y-2">
                   <Button
                     asChild
@@ -262,19 +256,6 @@ export function Header() {
                     </Link>
                   </Button>
                   <Button
-                    asChild
-                    variant="ghost"
-                    className="w-full justify-start"
-                  >
-                    <Link
-                      to="/crud-demo"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <User className="h-4 w-4 mr-2" />
-                      CRUD Demo
-                    </Link>
-                  </Button>
-                  <Button
                     variant="ghost"
                     className="w-full justify-start"
                     onClick={() => {
@@ -286,29 +267,17 @@ export function Header() {
                     Logout
                   </Button>
                 </div>
-              ) : (
-                <div className="space-y-2">
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="w-full text-[#0093DD] hover:text-[#0093DD]/80"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Link to="/login">Login</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    className="w-full bg-[#0093DD] hover:bg-[#0093DD]/90"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Link to="/register">Register</Link>
-                  </Button>
-                </div>
               )}
             </div>
           </div>
         )}
       </header>
+
+      {/* Mobile Auth Modal */}
+      <MobileAuthModal
+        isOpen={showMobileAuth}
+        onClose={() => setShowMobileAuth(false)}
+      />
     </TooltipProvider>
   );
 }
