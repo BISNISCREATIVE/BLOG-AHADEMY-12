@@ -40,15 +40,11 @@ const paginationSchema = z.object({
   limit: z.string().transform(Number).default("10"),
 });
 
-// GET /api/posts/recommended - Get recommended posts (auth required)
-export const getRecommendedPosts: RequestHandler = (req: AuthRequest, res) => {
+// GET /api/posts/recommended - Get recommended posts (carousel posts with images)
+export const getRecommendedPosts: RequestHandler = (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-
     const { page, limit } = paginationSchema.parse(req.query);
-    const result = MockDataService.getAllPosts(page, limit, "latest");
+    const result = MockDataService.getRecommendedPosts(page, limit);
 
     res.json(result);
   } catch (error) {
@@ -56,11 +52,11 @@ export const getRecommendedPosts: RequestHandler = (req: AuthRequest, res) => {
   }
 };
 
-// GET /api/posts/most-liked - Get most liked posts
+// GET /api/posts/most-liked - Get most liked posts (text only, no images)
 export const getMostLikedPosts: RequestHandler = (req, res) => {
   try {
     const { page, limit } = paginationSchema.parse(req.query);
-    const result = MockDataService.getAllPosts(page, limit, "likes");
+    const result = MockDataService.getMostLikedPosts(page, limit);
 
     res.json(result);
   } catch (error) {

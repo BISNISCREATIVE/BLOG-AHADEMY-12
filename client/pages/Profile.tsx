@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useMyPosts, useDeletePost, useLikePost } from "@/hooks/use-posts";
+import {
+  useMyPosts,
+  useDeletePost,
+  useLikePost,
+  useUpdatePost,
+} from "@/hooks/use-posts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +32,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { validateFile, createFilePreview } from "@/lib/upload";
 import {
   Pencil,
   Trash2,
@@ -39,6 +45,7 @@ import {
   Settings,
   User,
   Lock,
+  X,
 } from "lucide-react";
 import { Post } from "@shared/types";
 
@@ -160,6 +167,197 @@ function StatisticsModal({
   );
 }
 
+interface EditPostModalProps {
+  post: Post;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function EditPostModal({ post, isOpen, onClose }: EditPostModalProps) {
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
+  const [tags, setTags] = useState(post.tags?.join(", ") || "");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [removeImage, setRemoveImage] = useState(false);
+  const { toast } = useToast();
+  const updateMutation = useUpdatePost();
+
+  const handleSave = async () => {
+    if (!title.trim() || !content.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Title and content are required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await updateMutation.mutateAsync({
+        id: post.id.toString(),
+        data: {
+          title: title.trim(),
+          content: content.trim(),
+          tags: tags.trim(),
+          image: imageFile,
+          ...(removeImage && { imageUrl: "" }),
+        },
+      });
+
+      toast({
+        title: "Success",
+        description: "Post updated successfully!",
+      });
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update post. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const validation = validateFile(file);
+
+      if (!validation.valid) {
+        toast({
+          title: "Invalid file",
+          description: validation.error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      try {
+        setImageFile(file);
+        const preview = await createFilePreview(file);
+        setImagePreview(preview);
+        setRemoveImage(false);
+
+        toast({
+          title: "Image selected",
+          description: "Your new image has been selected.",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to process the image file.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    setRemoveImage(true);
+  };
+
+  const displayImage = imagePreview || (removeImage ? null : post.imageUrl);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Edit Post</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-6">
+          {/* Image Section */}
+          <div>
+            <label className="text-sm font-medium">Featured Image</label>
+            {displayImage && (
+              <div className="mt-2 relative inline-block">
+                <img
+                  src={displayImage}
+                  alt="Post preview"
+                  className="w-full max-w-md h-40 object-cover rounded-lg"
+                />
+                <button
+                  onClick={handleRemoveImage}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+            <div className="mt-2">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#0093DD] file:text-white hover:file:bg-[#0093DD]/90"
+              />
+            </div>
+            {imageFile && (
+              <p className="text-sm text-[#535862] mt-1">
+                New image selected: {imageFile.name}
+              </p>
+            )}
+          </div>
+
+          {/* Title */}
+          <div>
+            <label className="text-sm font-medium">Title *</label>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="mt-1"
+              placeholder="Enter post title..."
+            />
+          </div>
+
+          {/* Content */}
+          <div>
+            <label className="text-sm font-medium">Content *</label>
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="mt-1 min-h-[200px]"
+              placeholder="Write your post content..."
+            />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label className="text-sm font-medium">Tags</label>
+            <Input
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className="mt-1"
+              placeholder="e.g. Programming, Frontend, Coding"
+            />
+            <p className="text-xs text-[#535862] mt-1">
+              Separate tags with commas
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2 pt-4">
+            <Button
+              onClick={handleSave}
+              disabled={updateMutation.isPending}
+              className="flex-1"
+            >
+              {updateMutation.isPending ? "Updating..." : "Update Post"}
+            </Button>
+            <Button variant="outline" onClick={onClose} className="flex-1">
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 interface EditProfileModalProps {
   user: any;
   isOpen: boolean;
@@ -168,15 +366,56 @@ interface EditProfileModalProps {
 
 function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
   const [name, setName] = useState(user?.name || "");
-  const [headline, setHeadline] = useState("Frontend Developer");
+  const [headline, setHeadline] = useState(
+    user?.headline || "Frontend Developer",
+  );
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSave = () => {
+    // In a real app, you would upload the avatar to a server/cloud storage
+    // and get back a URL to save in the user profile
     toast({
       title: "Profile Updated",
       description: "Your profile has been updated successfully!",
     });
     onClose();
+  };
+
+  const handleAvatarChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const validation = validateFile(file);
+
+      if (!validation.valid) {
+        toast({
+          title: "Invalid file",
+          description: validation.error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      try {
+        setAvatarFile(file);
+        const preview = await createFilePreview(file);
+        setAvatarPreview(preview);
+
+        toast({
+          title: "Photo selected",
+          description: "Your new profile photo has been selected.",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to process the image file.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
@@ -189,6 +428,11 @@ function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
           <div className="flex justify-center">
             <div className="relative">
               <Avatar className="h-20 w-20">
+                <AvatarImage
+                  src={avatarPreview || user?.avatarUrl}
+                  alt={user?.name}
+                  className="object-cover"
+                />
                 <AvatarFallback className="text-lg">
                   {user?.name
                     ?.split(" ")
@@ -196,11 +440,26 @@ function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
                     .join("") || "U"}
                 </AvatarFallback>
               </Avatar>
-              <button className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 hover:bg-primary/90">
+              <label
+                htmlFor="avatar-upload"
+                className="absolute -bottom-1 -right-1 bg-[#0093DD] text-white rounded-full p-2 hover:bg-[#0093DD]/90 cursor-pointer transition-colors shadow-lg"
+              >
                 <Camera className="h-3 w-3" />
-              </button>
+              </label>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="hidden"
+              />
             </div>
           </div>
+          {avatarFile && (
+            <p className="text-sm text-center text-[#535862]">
+              New photo selected: {avatarFile.name}
+            </p>
+          )}
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium">Name</label>
@@ -237,6 +496,7 @@ export default function Profile() {
     type: "likes" | "comments";
   } | null>(null);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [editPostModal, setEditPostModal] = useState<Post | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -424,6 +684,7 @@ export default function Profile() {
                           <Button
                             size="sm"
                             variant="outline"
+                            onClick={() => setEditPostModal(post)}
                             className="flex items-center gap-1"
                           >
                             <Pencil className="h-4 w-4" />
@@ -554,6 +815,14 @@ export default function Profile() {
           type={statisticsModal.type}
           isOpen={true}
           onClose={() => setStatisticsModal(null)}
+        />
+      )}
+
+      {editPostModal && (
+        <EditPostModal
+          post={editPostModal}
+          isOpen={true}
+          onClose={() => setEditPostModal(null)}
         />
       )}
 

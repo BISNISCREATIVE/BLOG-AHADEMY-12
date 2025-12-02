@@ -456,7 +456,7 @@ export default function Edit() {
       setFormData({
         title: post.title,
         content: post.content,
-        tags: post.tags ? post.tags.split(", ") : [],
+        tags: post.tags || [],
         image: null,
       });
 
